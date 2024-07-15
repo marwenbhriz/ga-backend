@@ -97,6 +97,6 @@ jobs:
 
   notify-finished:
     if: always()
-    needs: terraform-apply
+    needs: Deploy
     uses: ./.github/workflows/_notify_finished.yaml
     secrets: inherit
