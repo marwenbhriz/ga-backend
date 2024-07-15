@@ -1,4 +1,4 @@
-package bookcontroller
+package taskcontroller
 
 import (
 	"encoding/json"
@@ -13,21 +13,21 @@ import (
 
 func Index(c *gin.Context) {
 
-	var books []models.Book
+	var tasks []models.Task
 
-	models.DB.Find(&books)
-	c.JSON(http.StatusOK, gin.H{"books": books})
+	models.DB.Find(&tasks)
+	c.JSON(http.StatusOK, gin.H{"tasks": tasks})
 
 }
 
 func Show(c *gin.Context) {
-	var book models.Book
+	var task models.Task
 	id := c.Param("id")
 
-	if err := models.DB.First(&book, id).Error; err != nil {
+	if err := models.DB.First(&task, id).Error; err != nil {
 		switch err {
 		case gorm.ErrRecordNotFound:
-			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"message": "Show books failed"})
+			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"message": "Show tasks failed"})
 			return
 		default:
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
@@ -35,44 +35,44 @@ func Show(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, gin.H{"book": book})
+	c.JSON(http.StatusOK, gin.H{"task": task})
 }
 
 func Create(c *gin.Context) {
 
-	var book models.Book
+	var task models.Task
 
-	if err := c.ShouldBindJSON(&book); err != nil {
+	if err := c.ShouldBindJSON(&task); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		log.Fatal(err)
 		return
 	}
 
-	models.DB.Create(&book)
-	c.JSON(http.StatusOK, gin.H{"book": book})
+	models.DB.Create(&task)
+	c.JSON(http.StatusOK, gin.H{"task": task})
 }
 
 func Update(c *gin.Context) {
-	var book models.Book
+	var task models.Task
 	id := c.Param("id")
 
-	if err := c.ShouldBindJSON(&book); err != nil {
+	if err := c.ShouldBindJSON(&task); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	if models.DB.Model(&book).Where("id = ?", id).Updates(&book).RowsAffected == 0 {
+	if models.DB.Model(&task).Where("id = ?", id).Updates(&task).RowsAffected == 0 {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Update request failed"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Book details updated"})
+	c.JSON(http.StatusOK, gin.H{"message": "Task details updated"})
 
 }
 
 func Delete(c *gin.Context) {
 
-	var book models.Book
+	var task models.Task
 
 	var input struct {
 		Id json.Number
@@ -84,10 +84,10 @@ func Delete(c *gin.Context) {
 	}
 
 	id, _ := input.Id.Int64()
-	if models.DB.Delete(&book, id).RowsAffected == 0 {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Book detailed failed"})
+	if models.DB.Delete(&task, id).RowsAffected == 0 {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Task detailed failed"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Book removed"})
+	c.JSON(http.StatusOK, gin.H{"message": "Task removed"})
 }
