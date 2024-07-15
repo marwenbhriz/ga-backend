@@ -8,9 +8,10 @@ on:
       - closed
 
 env:
-  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  #PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  PROJECT_ID: grasys-study
   GKE_CLUSTER: ga-gke   
-  GKE_ZONE: asia-northeast1
+  GKE_ZONE: asia-northeast1-a
   DEPLOYMENT_NAME: ga-backend
   IMAGE: static-site
 
