@@ -6,13 +6,16 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/marwenbhriz/ga-backend/controllers/apicontroller"
 	"github.com/marwenbhriz/ga-backend/controllers/bookcontroller"
+	"github.com/marwenbhriz/ga-backend/models"
 )
 
 func main() {
 
 	router := gin.Default()
 
-	log.Println("Books API start listen on port 8088.")
+	models.ConnectDatabase()
+
+	log.Println("Books API start listen on port 8089.")
 
 	// apicontroller routes
 	router.GET("/api", apicontroller.Index)
@@ -24,6 +27,6 @@ func main() {
 	router.PUT("/api/book/:id", bookcontroller.Update)
 	router.DELETE("/api/book", bookcontroller.Delete)
 
-	router.Run(":8088")
+	router.Run(":8089")
 
 }
