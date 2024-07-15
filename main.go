@@ -1,11 +1,18 @@
 package main
 
 import (
+	"context"
 	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/handlers"
 	"github.com/marwenbhriz/ga-backend/controllers/apicontroller"
-	"github.com/marwenbhriz/ga-backend/controllers/bookcontroller"
+	"github.com/marwenbhriz/ga-backend/controllers/taskcontroller"
 	"github.com/marwenbhriz/ga-backend/models"
 )
 
@@ -15,18 +22,50 @@ func main() {
 
 	models.ConnectDatabase()
 
-	log.Println("Books API start listen on port 8089.")
+	log.Println("Tasks API start listen on port 8096.")
 
 	// apicontroller routes
 	router.GET("/api", apicontroller.Index)
 
-	// books routes
-	router.GET("/api/books", bookcontroller.Index)
-	router.GET("/api/book/:id", bookcontroller.Show)
-	router.POST("/api/book", bookcontroller.Create)
-	router.PUT("/api/book/:id", bookcontroller.Update)
-	router.DELETE("/api/book", bookcontroller.Delete)
+	// tasks routes
+	router.GET("/api/tasks", taskcontroller.Index)
+	router.GET("/api/task/:id", taskcontroller.Show)
+	router.POST("/api/task", taskcontroller.Create)
+	router.PUT("/api/task/:id", taskcontroller.Update)
+	router.DELETE("/api/task", taskcontroller.Delete)
 
-	router.Run(":8089")
+	// cors middleware
+	methods := handlers.AllowedMethods([]string{"OPTIONS", "DELETE", "GET", "HEAD", "POST", "PUT"})
+	origins := handlers.AllowedOrigins([]string{"*"})
+	headers := handlers.AllowedHeaders([]string{"Content-Type"})
+	handler := handlers.CORS(methods, origins, headers)(router)
+
+	// create and start server
+	s := &http.Server{
+		Addr:     ":9092",       // bind address
+		Handler:  handler,       // default handler
+		ErrorLog: log.Default(), // logger for the server
+	}
+	go func() {
+		log.Println("Listening on port 9092")
+		log.Fatal(s.ListenAndServe())
+	}()
+
+	// trap terminate or interrupt
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	signal.Notify(c, syscall.SIGTERM)
+
+	// block shutdown until terminal/interrupt signal received
+	// ⛔️ DON'T DELETE! This will shutdown server immediately
+	sig := <-c
+	log.Println("Gracefully shutting down...", sig)
+
+	// gracefully shutdown server, waiting max 30 seconds for current operations to complete
+	tc, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	cancel()
+	s.Shutdown(tc)
+
+	//router.Run(":8096")
 
 }

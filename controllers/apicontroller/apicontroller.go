@@ -5,5 +5,5 @@ import (
 )
 
 func Index(ctx *gin.Context) {
-	ctx.JSON(200, gin.H{"message": "welcome to payment api."})
+	ctx.JSON(200, gin.H{"message": "welcome to books api."})
 }
