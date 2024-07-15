@@ -20,7 +20,7 @@ jobs:
     secrets: inherit  
 
   setup-build-publish-deploy:
-    name: Setup, Build, Publish, and Deploy
+    name: Setup-Scan-Build-Scan-Publish-Deploy
     runs-on: ubuntu-latest
     environment: production
     needs: notify-started
@@ -98,6 +98,6 @@ jobs:
 
   notify-finished:
     if: always()
-    needs: Setup, Build, Publish, and Deploy
+    needs: Setup-Scan-Build-Scan-Publish-Deploy
     uses: ./.github/workflows/_notify_finished.yaml
     secrets: inherit
