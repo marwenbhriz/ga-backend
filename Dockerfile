@@ -1,19 +1,23 @@
 FROM golang:1.19.2-bullseye
 
-LABEL maintainer ="Marwen Ben Hriz <marwen.benhriz@gmail.com>"
+#LABEL maintainer ="Marwen Ben Hriz <marwen.benhriz@gmail.com>"
 
 WORKDIR /app
  
 # Effectively tracks changes within your go.mod file
-COPY go.mod .
+#COPY go.mod .
  
-RUN go mod download
+#RUN go mod download
  
 # Copies your source code into the app directory
-COPY main.go .
+#COPY main.go .
  
-RUN go mod -o /gabackend
+#RUN go mod -o /gabackend
  
-EXPOSE 8091
+#EXPOSE 8091
  
-CMD [ “/gabackend” ]
+#CMD [ “/gabackend” ]
+
+WORKDIR /app
+COPY . .
+ENTRYPOINT ["go", "run", "main.go"]
