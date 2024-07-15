@@ -19,8 +19,8 @@ jobs:
     uses: ./.github/workflows/_notify_started.yaml
     secrets: inherit  
 
-  setup-build-publish-deploy:
-    name: Setup-Scan-Build-Scan-Publish-Deploy
+  setup-scan-build-scan-publish-deploy:
+    name: Setup Scan Build Scan Publish Deploy
     runs-on: ubuntu-latest
     environment: production
     needs: notify-started
@@ -98,6 +98,6 @@ jobs:
 
   notify-finished:
     if: always()
-    needs: Setup-Scan-Build-Scan-Publish-Deploy
+    needs: setup-scan-build-scan-publish-deploy
     uses: ./.github/workflows/_notify_finished.yaml
     secrets: inherit
