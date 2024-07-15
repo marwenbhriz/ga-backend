@@ -2,6 +2,7 @@ package bookcontroller
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/marwenbhriz/ga-backend/models"
@@ -43,6 +44,7 @@ func Create(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&book); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		log.Fatal(err)
 		return
 	}
 

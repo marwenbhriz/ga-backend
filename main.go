@@ -12,7 +12,7 @@ func main() {
 
 	router := gin.Default()
 
-	log.Println("Books API start listen on port 8085.")
+	log.Println("Books API start listen on port 8088.")
 
 	// apicontroller routes
 	router.GET("/api", apicontroller.Index)
@@ -24,6 +24,6 @@ func main() {
 	router.PUT("/api/book/:id", bookcontroller.Update)
 	router.DELETE("/api/book", bookcontroller.Delete)
 
-	router.Run(":8085")
+	router.Run(":8088")
 
 }
