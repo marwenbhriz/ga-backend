@@ -15,7 +15,7 @@ func main() {
 
 	models.ConnectDatabase()
 
-	log.Println("Books API start listen on port 8089.")
+	log.Println("Books API start listen on port 8091.")
 
 	// apicontroller routes
 	router.GET("/api", apicontroller.Index)
@@ -27,6 +27,6 @@ func main() {
 	router.PUT("/api/book/:id", bookcontroller.Update)
 	router.DELETE("/api/book", bookcontroller.Delete)
 
-	router.Run(":8089")
+	router.Run(":8091")
 
 }
