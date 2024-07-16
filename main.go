@@ -22,7 +22,7 @@ func main() {
 
 	models.ConnectDatabase()
 
-	log.Println("Tasks API start listen on port 8096.")
+	log.Println("Tasks API start listen on port 8086.")
 
 	// apicontroller routes
 	router.GET("/api", apicontroller.Index)
@@ -42,12 +42,12 @@ func main() {
 
 	// create and start server
 	s := &http.Server{
-		Addr:     ":8082",       // bind address
+		Addr:     ":8086",       // bind address
 		Handler:  handler,       // default handler
 		ErrorLog: log.Default(), // logger for the server
 	}
 	go func() {
-		log.Println("Listening on port 8082")
+		log.Println("Listening on port 8086")
 		log.Fatal(s.ListenAndServe())
 	}()
 
