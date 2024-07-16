@@ -111,6 +111,7 @@ jobs:
       run: |-
         docker build \
           --tag ga-backend \
+          --file ./docker/app/Dockerfile \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
           .
