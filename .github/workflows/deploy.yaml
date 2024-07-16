@@ -61,7 +61,7 @@ jobs:
         cluster_name: ${{ env.GKE_CLUSTER }}
         location: ${{ env.REGION }}
         project_id: ${{ env.PROJECT_ID }}
-        credentials: ${{ secrets.GKE_SA_KEY }}
+        credentials: ${{ secrets.GKE_KEY }}
 
     - name: "Docker auth"
       run: |-
