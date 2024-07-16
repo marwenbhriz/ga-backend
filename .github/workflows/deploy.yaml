@@ -72,6 +72,21 @@ jobs:
       run: |-
         docker push "asia-northeast1-docker.pkg.dev/${{ secrets.GKE_PROJECT }}/ga-upstream-repo/ga-backend:$GITHUB_SHA"
 
+    - name: Run trivy for docker image
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: "asia-northeast1-docker.pkg.dev/ga-backend:$GITHUB_SHA"
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
+        
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: 'trivy-results.sarif'
+
   notify-finished:
     if: always()
     needs: setup-scan-build-scan-publish-deploy
