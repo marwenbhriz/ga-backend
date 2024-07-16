@@ -6,7 +6,7 @@ LABEL maintainer ="Marwen Ben Hriz <marwen.benhriz@gmail.com>"
 WORKDIR /app
  
 # Effectively tracks changes within your go.mod file
-COPY ../../go.mod .
+COPY go.mod .
  
 RUN go mod download
  
