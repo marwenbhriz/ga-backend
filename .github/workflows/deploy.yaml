@@ -14,6 +14,9 @@ env:
   GKE_ZONE: asia-northeast1-a
   DEPLOYMENT_NAME: ga-backend
   IMAGE: static-site
+  REGION: asia-northeast1
+  GAR_LOCATION: asia-northeast1-docker.pkg.dev/containers/ga-backend
+
 
 jobs:
   notify-started:
@@ -42,10 +45,20 @@ jobs:
         service_account_key: ${{ secrets.GKE_SA_KEY }}
         project_id: ${{ secrets.GKE_PROJECT }}
 
+    - name: "Set up Cloud SDK"
+      uses: "google-github-actions/setup-gcloud@v1"
+
+    - name: "Use gcloud CLI"
+      run: "gcloud info"
+
+    - name: "Docker auth"
+      run: |-
+        gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
     # Configure Docker to use the gcloud command-line tool as a credential
     # helper for authentication
-    - run: |-
-        gcloud --quiet auth configure-docker 
+    #- run: |-
+        #gcloud --quiet auth configure-docker 
       # gcloud auth configure-docker asia-northeast1-docker.pkg.dev/containers
 
     # Get the GKE credentials so we can deploy to the cluster
@@ -62,6 +75,7 @@ jobs:
           --tag "asia-northeast1-docker.pkg.dev/containers/ga-backend:$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
+      working-directory: WORKING_DIRECTORY
           .
 
     # Push the Docker image to Google Container Registry
@@ -72,7 +86,7 @@ jobs:
     - name: Run trivy for docker image
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: "gcr.io/$PROJECT_ID/ga-backend:$GITHUB_SHA"
+        image-ref: "asia-northeast1-docker.pkg.dev/containers/ga-backend:$GITHUB_SHA"
         format: 'sarif'
         output: 'trivy-results.sarif'
         ignore-unfixed: true
