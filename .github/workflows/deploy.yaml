@@ -5,19 +5,32 @@ on:
       - master
     types:
       - closed
+env:
+  #PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  PROJECT_ID: grasys-study
+  GKE_CLUSTER: ga-gke
+  GKE_ZONE: asia-northeast1-a
+  DEPLOYMENT_NAME: ga-backend
+  IMAGE: static-site
+  REGION: asia-northeast1
+  GAR_LOCATION: asia-northeast1-docker.pkg.dev/containers/ga-backend
 
 jobs:
-  job_id:
-    # Add "id-token" with the intended permissions.
-    permissions:
-      runs-on: ubuntu-latest
-      contents: 'read'
-      id-token: 'write'
+  notify-started:
+    uses: ./.github/workflows/_notify_started.yaml
+    secrets: inherit
+
+  setup-scan-build-scan-publish-deploy:
+    name: Setup Scan Build Scan Publish Deploy
+    runs-on: ubuntu-latest
+    environment: production
+    needs: notify-started
 
     steps:
-    - uses: 'actions/checkout@v4'
-
-    - uses: 'google-github-actions/auth@v2'
-      with:
-        project_id: 'grasys-study'
-        workload_identity_provider: 'projects/770946389395/locations/global/workloadIdentityPools/grasys-tfc-pool'
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@master
+      env:
+        SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+        SONAR_HOST_URL: ${{secrets.SONAR_HOST_URL}}
