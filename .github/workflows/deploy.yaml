@@ -54,3 +54,13 @@ jobs:
 
     - name: "Use gcloud CLI"
       run: "gcloud info"
+
+    - name: "Docker auth"
+      run: |-
+        gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+  notify-finished:
+    if: always()
+    needs: setup-scan-build-scan-publish-deploy
+    uses: ./.github/workflows/_notify_finished.yaml
+    secrets: inherit 
