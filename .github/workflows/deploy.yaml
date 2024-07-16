@@ -63,14 +63,14 @@ jobs:
     - name: Build
       run: |-
         docker build \
-          --tag "asia-northeast1-docker.pkg.dev/ga-backend:$GITHUB_SHA" \
+          --tag "asia-northeast1-docker.pkg.dev/${{ secrets.GKE_PROJECT }}/ga-backend:$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
           .
     # Push the Docker image to Google Container Registry
     - name: Publish
       run: |-
-        docker push "asia-northeast1-docker.pkg.dev/ga-backend:$GITHUB_SHA"
+        docker push "asia-northeast1-docker.pkg.dev/${{ secrets.GKE_PROJECT }}/ga-backend:$GITHUB_SHA"
 
   notify-finished:
     if: always()
