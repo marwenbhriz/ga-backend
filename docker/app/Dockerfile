@@ -1,4 +1,5 @@
-FROM golang:1.19.2-bullseye
+#FROM golang:1.19.2-bullseye
+FROM golang:1.19
 
 LABEL maintainer ="Marwen Ben Hriz <marwen.benhriz@gmail.com>"
 
