@@ -1,20 +1,14 @@
-#FROM golang:1.19.2-bullseye
-FROM golang:1.22.4-alpine AS build
+# Start from a base Go image
+FROM golang:1.22.4-alpine
 
-LABEL maintainer ="Marwen Ben Hriz <marwen.benhriz@gmail.com>"
-
+# Set the Current Working Directory inside the container
 WORKDIR /app
- 
-# Effectively tracks changes within your go.mod file
-COPY ../../go.mod ../../go.sum ./
- 
-RUN go mod download
- 
-# Copies your source code into the app directory
-COPY ../../main.go .
- 
-RUN go mod -o /gabackend
- 
+
+# Copy the source code from the current directory to the Working Directory inside the container
+COPY . .
+
+# Expose port 8080 to the outside world
 EXPOSE 9090
- 
-CMD [ “/gabackend” ]
+
+# Command to run the application using go run
+CMD ["go", "run", "./cmd/server/main.go"]
