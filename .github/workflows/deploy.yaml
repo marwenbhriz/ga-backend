@@ -111,6 +111,7 @@ jobs:
       run: |-
         docker build \
           --tag ga-backend \
+          --file ./docker/app/Dockerfile \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
           .
@@ -118,12 +119,12 @@ jobs:
     # tag image to push to dockerhub
     - name: Tag
       run: |-
-        docker tag ga-backend "marbenhriz/ga-backend:$GITHUB_SHA"
+        docker tag ga-backend "marbenhriz/ga-backend:latest"
 
     # Push the Docker image to dockerhub
     - name: Publish
       run: |-
-        docker push "marbenhriz/ga-backend:$GITHUB_SHA"
+        docker push "marbenhriz/ga-backend:latest"
 
     - name: Run trivy for docker image
       uses: aquasecurity/trivy-action@master
@@ -143,7 +144,7 @@ jobs:
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
-        ./kustomize edit set marbenhriz/ga-backend:$GITHUB_SHA
+        ./kustomize edit set marbenhriz/ga-backend:latest
         ./kustomize build . | kubectl apply -f -
         kubectl rollout status deployment/$DEPLOYMENT_NAME
         kubectl get services -o wide
