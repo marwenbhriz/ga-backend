@@ -5,11 +5,12 @@ on:
       - master
     types:
       - closed
-      
+
 jobs:
   job_id:
     # Add "id-token" with the intended permissions.
     permissions:
+      runs-on: ubuntu-latest
       contents: 'read'
       id-token: 'write'
 
