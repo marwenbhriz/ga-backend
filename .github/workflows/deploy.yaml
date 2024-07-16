@@ -99,7 +99,7 @@ jobs:
           #--tag "marbenhriz/ga-backend:$GITHUB_SHA" \
           #--build-arg GITHUB_SHA="$GITHUB_SHA" \
           #--build-arg GITHUB_REF="$GITHUB_REF" \
-          .
+          #.
     # Push the Docker image to dockerhub
     #- name: Publish
       #run: |-
