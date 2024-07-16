@@ -12,7 +12,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/handlers"
 	"github.com/marwenbhriz/ga-backend/controllers/apicontroller"
-	"github.com/marwenbhriz/ga-backend/controllers/taskcontroller"
 	"github.com/marwenbhriz/ga-backend/models"
 )
 
@@ -28,11 +27,11 @@ func main() {
 	router.GET("/api", apicontroller.Index)
 
 	// tasks routes
-	router.GET("/api/tasks", taskcontroller.Index)
-	router.GET("/api/task/:id", taskcontroller.Show)
-	router.POST("/api/task", taskcontroller.Create)
-	router.PUT("/api/task/:id", taskcontroller.Update)
-	router.DELETE("/api/task", taskcontroller.Delete)
+	router.GET("/api/users", usercontroller.Index)
+	router.GET("/api/user/:id", usercontroller.Show)
+	router.POST("/api/user", usercontroller.Create)
+	router.PUT("/api/user/:id", usercontroller.Update)
+	router.DELETE("/api/user", usercontroller.Delete)
 
 	// cors middleware
 	methods := handlers.AllowedMethods([]string{"OPTIONS", "DELETE", "GET", "HEAD", "POST", "PUT"})
@@ -42,12 +41,12 @@ func main() {
 
 	// create and start server
 	s := &http.Server{
-		Addr:     ":9092",       // bind address
+		Addr:     ":8082",       // bind address
 		Handler:  handler,       // default handler
 		ErrorLog: log.Default(), // logger for the server
 	}
 	go func() {
-		log.Println("Listening on port 9092")
+		log.Println("Listening on port 8082")
 		log.Fatal(s.ListenAndServe())
 	}()
 

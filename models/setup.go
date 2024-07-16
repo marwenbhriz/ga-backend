@@ -25,16 +25,14 @@ func ConnectDatabase() {
 	database_user := os.Getenv("DATABASE_USER")
 	database_password := os.Getenv("DATABASE_PASSWORD")
 
-	//database, err := gorm.Open(mysql.Open("root:root@tcp(localhost:3307)/taskss?charset=utf8mb4&parseTime=True&loc=Local"))
-
-	database, err := gorm.Open(mysql.Open(database_user + ":" + database_password + "@tcp(" + database_host + ")/tasks?charset=utf8mb4&parseTime=True&loc=Local"))
+	database, err := gorm.Open(mysql.Open(database_user + ":" + database_password + "@tcp(" + database_host + ")/users-db?charset=utf8mb4&parseTime=True&loc=Local"))
 
 	if err != nil {
 		//panic(err)
 		log.Fatal(err)
 	}
 
-	database.AutoMigrate(&Task{})
+	database.AutoMigrate(&User{})
 
 	DB = database
 }
