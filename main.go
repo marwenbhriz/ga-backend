@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/handlers"
 	"github.com/marwenbhriz/ga-backend/controllers/apicontroller"
+	"github.com/marwenbhriz/ga-backend/controllers/usercontroller"
 	"github.com/marwenbhriz/ga-backend/models"
 )
 
