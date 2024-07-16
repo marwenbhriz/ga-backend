@@ -12,4 +12,4 @@ COPY . .
 EXPOSE 9090
 
 # Command to run the application using go run
-CMD ["go", "run", "./cmd/server/main.go"]
+CMD ["go", "run", "main.go"]
