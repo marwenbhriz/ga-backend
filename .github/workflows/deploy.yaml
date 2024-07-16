@@ -57,22 +57,22 @@ jobs:
 
     # Configure Docker to use the gcloud command-line tool as a credential
     # helper for authentication
-    #- run: |-
-        #gcloud --quiet auth configure-docker 
-      # gcloud auth configure-docker asia-northeast1-docker.pkg.dev/containers
+    - run: |-
+        gcloud --quiet auth configure-docker 
+        gcloud auth configure-docker asia-northeast1-docker.pkg.dev
 
     # Get the GKE credentials so we can deploy to the cluster
-   # - uses: google-github-actions/get-gke-credentials@db150f2cc60d1716e61922b832eae71d2a45938f
-      #with:
-        #cluster_name: ${{ env.GKE_CLUSTER }}
-        #location: ${{ env.GKE_ZONE }}
-        #credentials: ${{ secrets.GKE_SA_KEY }}
+    - uses: google-github-actions/get-gke-credentials@db150f2cc60d1716e61922b832eae71d2a45938f
+      with:
+        cluster_name: ${{ env.GKE_CLUSTER }}
+        location: ${{ env.GKE_ZONE }}
+        credentials: ${{ secrets.GKE_SA_KEY }}
 
     # Build the Docker image
     - name: Build
       run: |-
         docker build \
-          --tag "asia-northeast1-docker.pkg.dev/containers/ga-backend:$GITHUB_SHA" \
+          --tag "asia-northeast1-docker.pkg.dev/ga-backend:$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
           .
@@ -80,12 +80,12 @@ jobs:
     # Push the Docker image to Google Container Registry
     - name: Publish
       run: |-
-        docker push "asia-northeast1-docker.pkg.dev/containers/ga-backend:$GITHUB_SHA"
+        docker push "asia-northeast1-docker.pkg.dev/ga-backend:$GITHUB_SHA"
 
     - name: Run trivy for docker image
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: "asia-northeast1-docker.pkg.dev/containers/ga-backend:$GITHUB_SHA"
+        image-ref: "asia-northeast1-docker.pkg.dev/ga-backend:$GITHUB_SHA"
         format: 'sarif'
         output: 'trivy-results.sarif'
         ignore-unfixed: true
