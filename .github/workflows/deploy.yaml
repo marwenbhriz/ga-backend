@@ -75,7 +75,6 @@ jobs:
           --tag "asia-northeast1-docker.pkg.dev/containers/ga-backend:$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
-      working-directory: WORKING_DIRECTORY
           .
 
     # Push the Docker image to Google Container Registry
