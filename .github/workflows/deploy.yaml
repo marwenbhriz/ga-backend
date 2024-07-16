@@ -1,4 +1,4 @@
-name: Build and Deploy to GKE
+name: Build and Deploy GA Backend to GKE
 on:
   pull_request:
     branches:
@@ -141,12 +141,12 @@ jobs:
         sarif_file: 'trivy-results.sarif'
 
     # Deploy the Docker image to the GKE cluster
-    #- name: Deploy
-      #run: |-
-        #./kustomize edit set image marbenhriz/ga-backend:$GITHUB_SHA
-        #./kustomize build . | kubectl apply -f -
-        #kubectl rollout status deployment/$DEPLOYMENT_NAME
-        #kubectl get services -o wide
+    - name: Deploy
+      run: |-
+        ./kustomize edit set marbenhriz/ga-backend:$GITHUB_SHA
+        ./kustomize build . | kubectl apply -f -
+        kubectl rollout status deployment/$DEPLOYMENT_NAME
+        kubectl get services -o wide
 
   notify-finished:
     if: always()
