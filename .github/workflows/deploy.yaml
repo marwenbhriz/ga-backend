@@ -113,7 +113,7 @@ jobs:
           --tag ga-backend \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
-          .
+          . -no-cache
 
     # tag image to push to dockerhub
     - name: Tag
