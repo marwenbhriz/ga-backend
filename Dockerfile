@@ -1,5 +1,5 @@
 # Start from a base Go image
-FROM golang:1.22 as builder
+FROM golang:latest as builder
 
 # Set necessary environment variables
 ENV GO111MODULE=on \
@@ -11,7 +11,7 @@ ENV GO111MODULE=on \
 WORKDIR /app
 
 # Copy go mod and sum files
-COPY .go.mod .go.sum ./
+COPY go.mod go.sum ./
 
 # Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
 RUN go mod download
