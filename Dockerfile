@@ -13,9 +13,6 @@ WORKDIR /app
 # Copy go mod and sum files
 COPY . ./
 
-RUN go mod init github.com/marwenbhriz/ga-backend
-RUN go mod tidy
-
 # Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
 RUN go mod download
 
