@@ -1,5 +1,7 @@
 # Start from a base Go image
-FROM golang:1.22.4 builder
+FROM golang:1.20.3 builder
+
+LABEL maintainer="marwen@gmail.com"
 
 # Set necessary environment variables
 ENV GO111MODULE=on \
