@@ -1,5 +1,7 @@
 # Start from a base Go image
-FROM golang:latest as builder
+ARG GO_VERSION=1.22.4
+
+FROM golang:${GO_VERSION} builder
 
 # Set necessary environment variables
 ENV GO111MODULE=on \
